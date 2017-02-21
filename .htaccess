@@ -1,0 +1,16 @@
+RewriteEngine On
+# This will enable the Rewrite capabilities
+
+RewriteCond %{HTTP_HOST} ^[^.]+\.[^.]+$
+RewriteRule ^(.*)$ http://www.%{HTTP_HOST}/$1 [L,R=301]
+# Add "www" when there is no other subdomain
+
+RewriteOptions InheritDownBefore
+# This prevents the rule from being overrided by .htaccess files in subdirectories.
+
+RewriteCond %{HTTPS} !=on
+# This checks to make sure the connection is not already HTTPS
+
+RewriteRule ^ https://%{SERVER_NAME}%{REQUEST_URI} [QSA,R,L]
+# This rule will redirect users from their original location, to the same location but using HTTPS.
+# i.e.  http://www.example.com/foo/ to https://www.example.com/foo/
